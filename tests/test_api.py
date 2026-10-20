@@ -34,6 +34,8 @@ async def test_logs_in_once(hass: HomeAssistant, aioclient_mock: AiohttpClientMo
     assert (await client.signal_index("CAISO_NORTH"))["data"][0]["value"] == 5
     await client.signal_index("CAISO_NORTH")
     assert aioclient_mock.call_count == 3  # 1 login + 2 data calls
+    assert aioclient_mock.mock_calls[0][3]["Authorization"] == "Basic c29tZW9uZTpzZWNyZXQ="  # someone:secret
+    assert aioclient_mock.mock_calls[1][3]["Authorization"] == "Bearer abc"
 
 
 async def test_bad_password(hass: HomeAssistant, aioclient_mock: AiohttpClientMocker) -> None:

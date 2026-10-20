@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 from datetime import datetime
 import time
 from typing import Any
@@ -34,6 +35,10 @@ class WattTimeNotFoundError(WattTimeError):
     """WattTime has no data for the request (for example, a location outside coverage)."""
 
 
+def _basic(username: str, password: str) -> str:
+    return "Basic " + base64.b64encode(f"{username}:{password}".encode()).decode()
+
+
 def _utc(moment: datetime) -> str:
     return moment.strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -54,7 +59,7 @@ class WattTimeClient:
         try:
             async with self._session.get(
                 f"{API_URL}/login",
-                auth=aiohttp.BasicAuth(self._username, self._password),
+                headers={"Authorization": _basic(self._username, self._password)},
                 timeout=TIMEOUT,
             ) as resp:
                 if resp.status in (401, 403):
