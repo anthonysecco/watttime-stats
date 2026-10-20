@@ -1,0 +1,23 @@
+{
+  "entity": {
+    "binary_sensor": {
+      "clean_now": {
+        "default": "mdi:leaf-off",
+        "state": { "on": "mdi:leaf" }
+      }
+    },
+    "sensor": {
+      "emissions_index": { "default": "mdi:gauge" },
+      "marginal_emissions": { "default": "mdi:molecule-co2" },
+      "health_damage": { "default": "mdi:lungs" },
+      "cleanest_window": { "default": "mdi:leaf" },
+      "clean_until": { "default": "mdi:leaf-circle" },
+      "next_clean": { "default": "mdi:leaf-circle-outline" },
+      "clean_status": { "default": "mdi:leaf" },
+      "clean_threshold": { "default": "mdi:tune-vertical" }
+    }
+  },
+  "services": {
+    "get_forecast": { "service": "mdi:chart-timeline-variant" }
+  }
+}

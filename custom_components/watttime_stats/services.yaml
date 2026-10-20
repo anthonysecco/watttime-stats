@@ -1,0 +1,7 @@
+get_forecast:
+  fields:
+    config_entry_id:
+      required: false
+      selector:
+        config_entry:
+          integration: watttime_stats

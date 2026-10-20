@@ -1,0 +1,109 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "WattTime",
+        "description": "WattTime has no sign-up web page; accounts are created through its API. Pick \"Create an account\" if you don't have one yet.",
+        "menu_options": {
+          "login": "I have a WattTime account",
+          "register": "Create an account"
+        }
+      },
+      "login": {
+        "title": "Sign in to WattTime",
+        "description": "The location picks your grid region. Free accounts get the 0-100 index everywhere, and full data (live emissions, forecasts, health damage) for California ISO North. See [plans]({plans_url}).",
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "latitude": "Latitude",
+          "longitude": "Longitude"
+        }
+      },
+      "register": {
+        "title": "Create a WattTime account",
+        "description": "This sends your details to WattTime's /register endpoint ([API docs]({docs_url})), then signs in. The location picks your grid region.",
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "email": "Email",
+          "org": "Organization (optional)",
+          "latitude": "Latitude",
+          "longitude": "Longitude"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sign in again",
+        "description": "WattTime no longer accepts the password for {username}.",
+        "data": { "password": "Password" }
+      }
+    },
+    "error": {
+      "invalid_auth": "WattTime rejected the username or password.",
+      "cannot_connect": "Could not reach WattTime. Try again in a minute.",
+      "no_region": "WattTime has no grid region for this location.",
+      "register_failed": "WattTime did not create the account. The username may be taken or the password too weak; check the log for WattTime's message.",
+      "unknown": "Unexpected error; check the log."
+    },
+    "abort": {
+      "already_configured": "This grid region is already set up.",
+      "reauth_successful": "Signed in again."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "What counts as clean",
+        "description": "\"Clean\" means emissions are in the cleanest part of the look-ahead, and never above the maximum.",
+        "data": {
+          "unit": "CO2 unit",
+          "clean_percentile": "Cleanest share of the look-ahead",
+          "clean_max": "Never call it clean above",
+          "window_hours": "Cleanest window length",
+          "lookahead_hours": "Look ahead"
+        },
+        "data_description": {
+          "clean_percentile": "25% matches WattTime's own index (0-25 is its cleanest quarter).",
+          "clean_max": "Gas plants run about 385-470 g/kWh, so 227 keeps an all-gas day from being called clean.",
+          "lookahead_hours": "Up to 72 hours. WattTime's index always compares against the next 24 hours."
+        }
+      }
+    }
+  },
+  "selector": {
+    "unit": {
+      "options": { "g_kwh": "Grams per kWh (g/kWh)", "lbs_mwh": "Pounds per MWh (lbs/MWh)" }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "clean_now": { "name": "Clean now" }
+    },
+    "sensor": {
+      "emissions_index": { "name": "Emissions index" },
+      "marginal_emissions": { "name": "Marginal emissions" },
+      "health_damage": { "name": "Health damage" },
+      "cleanest_window": { "name": "Cleanest window" },
+      "clean_until": { "name": "Clean until" },
+      "next_clean": { "name": "Next clean" },
+      "clean_status": { "name": "Clean status" },
+      "clean_threshold": { "name": "Clean threshold" }
+    }
+  },
+  "exceptions": {
+    "no_entry": { "message": "No WattTime Status entry is loaded." },
+    "pick_entry": { "message": "More than one WattTime Status entry is set up; choose one with config_entry_id." },
+    "no_forecast": { "message": "This account has no forecast for this region yet." }
+  },
+  "services": {
+    "get_forecast": {
+      "name": "Get forecast",
+      "description": "Returns the CO2 forecast for the look-ahead, in 5-minute steps, in the unit you chose.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Region",
+          "description": "Which WattTime entry to use. Only needed if you set up more than one."
+        }
+      }
+    }
+  }
+}
