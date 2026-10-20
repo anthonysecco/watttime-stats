@@ -63,7 +63,8 @@ SENSORS: tuple[WattTimeSensorDescription, ...] = (
         key="emissions_index",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda d, c: d.index,
+        suggested_display_precision=0,
+        value_fn=lambda d, c: None if d.index is None else round(d.index),
         attrs_fn=lambda d, c: {"valid_from": d.index_time.isoformat() if d.index_time else None},
     ),
     WattTimeSensorDescription(

@@ -42,6 +42,13 @@ async def test_entities(hass: HomeAssistant, mock_client: AsyncMock, entry: Mock
     assert window.attributes["average"] == 0.0
 
 
+async def test_index_is_whole_number(hass: HomeAssistant, mock_client: AsyncMock, entry: MockConfigEntry) -> None:
+    """WattTime can send the index with decimals; it's shown as a whole number."""
+    mock_client.signal_index.return_value = {"data": [{"point_time": "2026-10-20T22:00:00+00:00", "value": 63.6}]}
+    await _setup(hass, entry)
+    assert hass.states.get("sensor.watttime_emissions_index").state == "64"
+
+
 async def test_index_only_account(hass: HomeAssistant, mock_client: AsyncMock, entry: MockConfigEntry) -> None:
     """Outside California, free accounts only get the index."""
     mock_client.my_access.return_value = {"signal_types": []}
