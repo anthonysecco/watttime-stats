@@ -28,6 +28,7 @@ async def async_get_config_entry_diagnostics(hass: HomeAssistant, entry: WattTim
     return {
         "entry": {"data": async_redact_data(dict(entry.data), REDACT), "options": dict(entry.options)},
         "access": sorted(coordinator.access),
+        "aoer_region": coordinator.aoer_region,
         "last_update_success": coordinator.last_update_success,
         "data": summary,
     }

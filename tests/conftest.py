@@ -56,7 +56,21 @@ def forecast_rows(start: datetime) -> list[dict[str, Any]]:
     return rows
 
 
+PAID_ACCESS = {
+    "signal_types": [
+        *FULL_ACCESS["signal_types"],
+        {
+            "signal_type": "co2_aoer",
+            "regions": [{"region": "CAISO", "endpoints": [{"endpoint": "v3/historical"}]}],
+        },
+    ]
+}
+
+
 def historical(region: str, signal: str, start: datetime, end: datetime) -> dict[str, Any]:
+    if signal == "co2_aoer":
+        assert region == "CAISO"  # AOER is only published for the parent region
+        return {"data": [{"point_time": (end - timedelta(hours=3)).isoformat(), "value": 500.0}]}
     value = 900.0 if signal == "co2_moer" else 12.5
     return {"data": [{"point_time": (end - timedelta(minutes=10)).isoformat(), "value": value}]}
 

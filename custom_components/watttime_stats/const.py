@@ -8,6 +8,7 @@ API_URL = "https://api.watttime.org"
 
 SIGNAL_MOER = "co2_moer"
 SIGNAL_HEALTH = "health_damage"
+SIGNAL_AOER = "co2_aoer"  # average emissions; paid plans, published for parent regions (e.g. CAISO)
 ENDPOINT_FORECAST = "v3/forecast"
 ENDPOINT_HISTORICAL = "v3/historical"
 
@@ -40,6 +41,8 @@ DEFAULT_LOOKAHEAD_HOURS = 24
 UPDATE_INTERVAL = timedelta(minutes=5)
 ACCESS_RECHECK = timedelta(hours=6)
 LIVE_LOOKBACK = timedelta(hours=1)
+AOER_LOOKBACK = timedelta(hours=24)  # average emissions are published with a delay
+AOER_REFRESH = timedelta(minutes=30)
 
 SERVICE_GET_FORECAST = "get_forecast"
 ATTR_CONFIG_ENTRY_ID = "config_entry_id"

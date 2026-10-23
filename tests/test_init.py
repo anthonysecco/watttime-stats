@@ -11,6 +11,8 @@ from custom_components.watttime_stats.const import CONF_UNIT, DOMAIN, SERVICE_GE
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 
+from .conftest import PAID_ACCESS
+
 
 async def _setup(hass: HomeAssistant, entry: MockConfigEntry) -> None:
     entry.add_to_hass(hass)
@@ -40,6 +42,23 @@ async def test_entities(hass: HomeAssistant, mock_client: AsyncMock, entry: Mock
     window = hass.states.get("sensor.watttime_cleanest_window")
     assert window.state not in ("unknown", "unavailable")
     assert window.attributes["average"] == 0.0
+
+    # Free plan: no average emissions, and no extra region lookup for them
+    assert hass.states.get("sensor.watttime_average_emissions") is None
+    mock_client.region_from_location.assert_not_called()
+
+
+async def test_average_emissions_paid_plan(hass: HomeAssistant, mock_client: AsyncMock, entry: MockConfigEntry) -> None:
+    """Accounts with AOER get average emissions for the parent region (CAISO)."""
+    mock_client.my_access.return_value = PAID_ACCESS
+    mock_client.region_from_location.return_value = {"region": "CAISO", "signal_type": "co2_aoer"}
+    await _setup(hass, entry)
+
+    state = hass.states.get("sensor.watttime_average_emissions")
+    assert state.state == "226.8"  # 500 lbs/MWh in g/kWh
+    assert state.attributes["unit_of_measurement"] == "g/kWh"
+    assert state.attributes["region"] == "CAISO"
+    mock_client.region_from_location.assert_awaited_once_with(37.33, -121.95, "co2_aoer")
 
 
 async def test_index_is_whole_number(hass: HomeAssistant, mock_client: AsyncMock, entry: MockConfigEntry) -> None:

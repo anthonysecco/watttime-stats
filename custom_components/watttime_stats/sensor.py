@@ -16,7 +16,7 @@ from homeassistant.const import PERCENTAGE, EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import ENDPOINT_FORECAST, ENDPOINT_HISTORICAL, SIGNAL_HEALTH, SIGNAL_MOER, UNIT_HEALTH
+from .const import ENDPOINT_FORECAST, ENDPOINT_HISTORICAL, SIGNAL_AOER, SIGNAL_HEALTH, SIGNAL_MOER, UNIT_HEALTH
 from .coordinator import WattTimeConfigEntry, WattTimeCoordinator, WattTimeData
 from .entity import WattTimeEntity, clock, co2
 
@@ -86,6 +86,15 @@ SENSORS: tuple[WattTimeSensorDescription, ...] = (
         needs=(SIGNAL_HEALTH, ENDPOINT_HISTORICAL),
         value_fn=lambda d, c: round(d.health.value, 2) if d.health else None,
         attrs_fn=lambda d, c: {"valid_from": d.health.time.isoformat() if d.health else None},
+    ),
+    WattTimeSensorDescription(
+        key="average_emissions",
+        co2_unit=True,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+        needs=(SIGNAL_AOER, ENDPOINT_HISTORICAL),
+        value_fn=lambda d, c: _round(d.aoer.value if d.aoer else None, c),
+        attrs_fn=lambda d, c: {"valid_from": d.aoer.time.isoformat() if d.aoer else None, "region": d.aoer_region},
     ),
     WattTimeSensorDescription(
         key="cleanest_window",

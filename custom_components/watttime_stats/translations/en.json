@@ -82,6 +82,7 @@
       "emissions_index": { "name": "Emissions index" },
       "marginal_emissions": { "name": "Marginal emissions" },
       "health_damage": { "name": "Health damage" },
+      "average_emissions": { "name": "Average emissions" },
       "cleanest_window": { "name": "Cleanest window" },
       "clean_until": { "name": "Clean until" },
       "next_clean": { "name": "Next clean" },

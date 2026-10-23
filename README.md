@@ -24,6 +24,7 @@ v3 API ("You must provide a valid signal type"), and adds forecasts and "clean w
 | `sensor.watttime_clean_status` | Short text for dashboards and small screens: "Clean until 4:30 PM", "Next clean 1:45 PM – 3:45 PM". |
 | `sensor.watttime_cleanest_window` | Start of the cleanest 2-hour stretch ahead (attributes `end`, `average`, `text`). |
 | `sensor.watttime_health_damage` | Health cost of the air pollution from extra power use, in USD/MWh. |
+| `sensor.watttime_average_emissions` | Average CO2 of all power on the grid right now (paid plans only; published for the wider grid, e.g. all of CAISO, with a delay). |
 | `sensor.watttime_clean_threshold` | The cutoff currently used for "clean" (diagnostic). |
 
 Which entities appear depends on your WattTime plan (below).
@@ -50,7 +51,8 @@ WattTime's free account includes:
 - **California ISO North (CAISO_NORTH)**, which covers Northern California, including the Bay Area
   and Sacramento: everything, meaning live emissions, forecasts up to 72 hours, history and health damage.
 
-Paid plans unlock full data in other regions. The integration asks WattTime what your account can
+Paid plans unlock full data in other regions, plus **average emissions** (AOER), which
+WattTime publishes only for the wider grid (for example all of CAISO, not CAISO_NORTH). The integration asks WattTime what your account can
 access and only creates the entities it can fill. See [WattTime's plans](https://watttime.org/docs-dev/data-plans/).
 
 ## Install
