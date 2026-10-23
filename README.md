@@ -2,6 +2,7 @@
 
 [![Validate](https://github.com/anthonysecco/watttime-stats/actions/workflows/validate.yml/badge.svg)](https://github.com/anthonysecco/watttime-stats/actions/workflows/validate.yml)
 [![Tests](https://github.com/anthonysecco/watttime-stats/actions/workflows/tests.yml/badge.svg)](https://github.com/anthonysecco/watttime-stats/actions/workflows/tests.yml)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-donate-yellow.svg)](https://www.buymeacoffee.com/anthonysecco)
 
 How clean is the power from the grid right now, and when will it be cleanest? This integration
 brings [WattTime](https://watttime.org/)'s marginal-emissions data into Home Assistant, so you
@@ -104,6 +105,10 @@ pip install -r requirements_test.txt
 pytest
 ruff check .
 ```
+
+## 💖 Support
+
+If you found this project useful, consider [buying me a coffee](https://www.buymeacoffee.com/anthonysecco). ☕
 
 ## AI Disclosure
 
